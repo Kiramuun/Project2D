@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -41,10 +42,15 @@ public class PlayersInputs : MonoBehaviour
 
     public void Pause (InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !SceneManager.GetSceneByBuildIndex(3).isLoaded)
         {
             Time.timeScale = 0f;
             SceneManager.LoadScene("PauseMenu", LoadSceneMode.Additive);
+        }
+        else if(context.performed && SceneManager.GetSceneByBuildIndex(3).isLoaded)
+        {
+            Time.timeScale = 1f;
+            SceneManager.UnloadSceneAsync("PauseMenu");
         }
     }
 }
